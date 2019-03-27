@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import "./App.css";
 
-const API_URL = "https://pokeapi.co/api/v2/pokemon/?limit=80&offset=80";
+const API_URL = "https://pokeapi.co/api/v2/pokemon/?limit=60&offset=60";
 
 class App extends Component {
   constructor(props) {
@@ -30,20 +30,19 @@ class App extends Component {
     return url.split("/")[6];
   }
 
+  //OnChange
   handleTextInput(event) {
     this.setState({
       filterInput: event.target.value
     });
-    //OnChange
     //input nås genom event.target.value.
   }
-
 
   render() {
     const pokemons = this.state.pokemonlist
       .slice()
       .filter(pokemon =>
-        this.state.filterInput === '' ? pokemon : pokemon.name.includes(this.state.filterInput))
+        this.state.filterInput === '' ? pokemon : pokemon.name.startsWith(this.state.filterInput))
       //om sökrutan är tom så laddas pokemon, om söktext matas in så körs includes().
       //alt. startsWith().
       .map((pokemon, i) => (
@@ -55,7 +54,6 @@ class App extends Component {
         </ul>
       ));
 
-
     return (
       <div>
         <h1>Pokedex</h1>
@@ -65,6 +63,7 @@ class App extends Component {
           value={this.state.filterInput}
           onChange={this.handleTextInput.bind(this)}
         />
+
         <div>{pokemons}</div>
       </div>
     );
@@ -72,3 +71,31 @@ class App extends Component {
 }
 
 export default App;
+
+
+/*
+getPokemons(){
+  return fetch(API_URL + '/pokemon')
+  .then((response => response.json())
+  .then((data)=>data.results)
+}
+
+getPokemonsWithTypeId(){
+  return fetch(API_URL + '/pokemon' + typeId)
+  .then((response => response.json())
+  .then((data)=>data.results)
+}
+
+componentDidMount(){
+  getpokemons(
+    .then((pokemons => this.setState({ pokemons })));
+  )
+}
+
+handleFIlterByType(typeId, event){
+  getPokemonsByTuypeId(typeId)
+  .then((pokemons)=> this.setstate({pokemons}))
+}
+
+
+*/
